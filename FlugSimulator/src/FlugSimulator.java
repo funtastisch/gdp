@@ -1,6 +1,9 @@
 public class FlugSimulator {
 
 	public static void main(String[] args) {
+		
+		String test;
+		
 		try {
 			int nrFlights = Integer.parseInt(args[0]);
 			
