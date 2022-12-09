@@ -1,13 +1,24 @@
 public class Bigs {
 
 	public static void main(String[] args) {
-		int a = 35;
-		//int[] number1 = fromInt(a);
-		int b = 775600000;
-		
-		int[] number2 = fromInt(b);
-		print(number2);
+		int[ ] a = One();
+	    for (int i=0; i<33222; ++i) { a = times(a, 2); }
+	    System.out.println("2^33222 hat " + a.length + " Stellen");
+	    print(a);
+	    System.out.println();
+	    int[ ] b = fromInt(13);
+	    int[ ] c = copy(b);
+	    for (int i=1; i<8978; ++i) { c = times(c, b); }
+	    System.out.println("13^8978 hat " + c.length + " Stellen");
+	    print(c);
+	    System.out.println();
+	    System.out.println(less(a, c));
+	    maxDigit(a);
+	    maxDigit(c);
+
 	}
+	
+	
 	// idea: addition in writing
 	public static int[] add(int[] a, int[] b) {
 		if(a.length <= b.length) {	// swap reference so the larger number is always a
@@ -38,13 +49,18 @@ public class Bigs {
 				System.out.print(n[i]);
 			}
 		}else{
-			for (int i = n.length-1; i > n.length-68; i--) 
+			int counter = 0;
+			for (int i = n.length - 1; i >= 0; i--) {
+				if(counter >68) {
+					System.out.print("\\ \n");
+					counter = 0;
+					continue;
+				}
 				System.out.print(n[i]);
-			System.out.print("\n");
-			for (int i = n.length-68; i > 0; i--) 
-				System.out.print(n[i]);
+				counter++;
+			}
 		}
-		System.out.print("\n");
+		
 	}
 	static int[] digit(int d) {
 		int[] digit = { d };
@@ -116,22 +132,67 @@ public class Bigs {
 		int[] product = new int[a.length]; 
 		for(int i = 0; i < b.length; i++) { // i is index from digits of a
 			for(int j = 0; j < a.length; j++) { // j is index from digits of b
-				int smallProduct = a[j] * b[i];
-				if(smallProduct >= 10) { 
-					if(i+j >= product.length-1) product = oneBiggerArray(product); // product array has to be enlarged to store carryover
-					product[i+j] += smallProduct % 10;
-					smallProduct /= 10;
-					product[i+j+1] += smallProduct % 10;
-					smallProduct /= 10;
-					// smallProduct / 10 just twice because can't be higher than 81 (9*9)
-				}else {
-				product [i+j] = smallProduct;
-				}
+				if(i+j == product.length) product = oneBiggerArray(product);
+				product[i+j] += a[j] * b[i];
+			}
+		}
+		for (int i = 0; i < product.length; i++) {
+			if(i == product.length-1 && product[i] > 9) product = oneBiggerArray(product);
+			while(product[i] > 9) {
+				product[i+1] += product[i] / 10;
+				product[i] %= 10;
 			}
 		}
 		return product;
 	}
-	
+	static int[] square(int[] n) {
+		int[] square = times(n, n);
+		return square;
+	}
+	static int[] cubic(int[] n) {
+		int[] cubic = times(n, times(n,n));
+		return cubic;
+	}
+	static boolean less (int[] a, int[] b) {
+		if(a.length > b.length) return false;
+		if(a.length < b.length) return true;
+		for(int i = a.length-1; i >= 0;i--)
+			if(a[i] > b[i]) return false;
+		if(a[0] == b[0]) return false;
+		return true;
+	}
+	static boolean equal(int[] a, int[] b) {
+		if (a.length != b.length) return false;
+		for(int i = 0; i < a.length; i++)
+			if(a[i] != b[i]) return false;
+		return true;
+	}
+	static boolean ok(int[] n) {
+		if(n == null) return false;
+		boolean greaterZeroSeen = false;
+		for(int i = n.length-1; i >= 0; i--) {
+			if(n[i] < 0 || n[i] > 9) return false;
+			if(n.length == 1 && n[0] == 0) return true; // case: single digit 0
+			if(!greaterZeroSeen && n[i] > 0) greaterZeroSeen = true;
+			if(!greaterZeroSeen && n[i] == 0) return false;	
+		}
+		return true;
+	}
+	static void maxDigit(int[] n) {
+		int[] counter = new int[10];
+		for(int i = 0; i < counter.length; i++) {
+			int count = 0;
+			for(int j = 0; j < n.length; j++) {
+				if(n[j] == i) count++;
+			}
+			counter[i] = count;
+		}
+		int maxIndex=0;
+		for (int i = 0; i < counter.length; i++) {
+			if(counter[i] > counter[maxIndex]) maxIndex = i;
+		}
+		System.out.println(maxIndex);
+	}
 	
 	
 	//--------------------
