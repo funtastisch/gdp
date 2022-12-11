@@ -110,7 +110,7 @@ public class Bigs {
 		}
 		return times;
 	}
-
+	// create new array with length + 1 -> copy all ints to index + 1, add 0 do index 0
 	static int[] times10(int[] n) {
 		int[] times10 = new int[n.length + 1];
 		times10[0] = 0;
