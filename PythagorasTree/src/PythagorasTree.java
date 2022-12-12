@@ -32,7 +32,6 @@ public class PythagorasTree {
 		StdDraw.line(x0, y0, x0, y0 + size);
 		StdDraw.line(x0 + size, y0, x0 + size, y0 + size);
 		drawTreePart(n, x0, y0 + size, size, 0);
-		
 	}
 	
 	/**
