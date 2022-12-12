@@ -3,6 +3,10 @@ import gdp.stdlib.StdOut;
 
 public class PythagorasTree {
 
+	
+	static void test () {
+		
+	}
 	public static void main(String[] args) {
 		int n = 0;
 		try {
