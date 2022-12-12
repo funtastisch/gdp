@@ -16,6 +16,10 @@ public class PythagorasTree {
 			StdOut.println("Kein oder mehr als ein Parameter!");
 			System.exit(-1);
 		}
+		if(n == 0) {
+			StdOut.println("Es muss mindestens eine Iteration geben!");
+			System.exit(-1);
+		}
 		
 		StdDraw.setXscale(0, 100);
 		StdDraw.setYscale(0, 100);
@@ -34,18 +38,20 @@ public class PythagorasTree {
 	/**
 	 * Draws a part of the tree with fix point at the bottom left corner of the triangle
 	 * @param n Iteration
-	 * @param x0 X Coordinate of starting point
-	 * @param y0 Y Coordinate of starting point
+	 * @param x0 x coordinate at alpha ankle
+	 * @param y0 y coordinate of alpha ankle
 	 * @param c length of hypothenuse of triangle
-	 * @param baseAlphaRadiant ankle at which the iteration is in
+	 * @param baseAlphaRadiant ankle at which the iteration is in relative to x axis of canvas
 	 */
 	static void drawTreePart(int n, double x0, double y0, double c, double baseAlphaRadiant) {
-		double alphaRadiant = Math.random()*Math.PI/6 + Math.PI/6;
-		double betaRadiant = Math.PI - Math.PI/2 - alphaRadiant;
+		
+		double alphaRadiant = Math.random()*Math.PI/6 + Math.PI/6; // radiant of ankle alpha
+		double betaRadiant = Math.PI - Math.PI/2 - alphaRadiant; // radiant of ankle beta
+		
 		double a = Math.cos(alphaRadiant) * c; // adjacent length
 		double b = Math.sin(alphaRadiant) * c; // oppsite leg length
 		
-		// P1 (x1|y2) is point at right ankle
+		// P1 (x1|y2) is point at beta ankle
 		double x1 = x0 + (Math.cos(alphaRadiant + baseAlphaRadiant) * a);
 		double y1 = y0 + (Math.sin(alphaRadiant + baseAlphaRadiant) * a);
 		
@@ -59,7 +65,7 @@ public class PythagorasTree {
 		StdDraw.line(x1, y1, x2, y2);
 		StdDraw.line(x2, y2, x0, y0);
 		
-		// calculate missing 2 points of left square
+		// calculate missing 2 points of left square by using sin and cos parallel to x and y axis of canvas
 		double x0SquareLeft = x0 + (Math.cos(Math.PI/2 + alphaRadiant + baseAlphaRadiant)) * a;
 		double y0SquareLeft = y0 + (Math.sin(Math.PI/2 + alphaRadiant + baseAlphaRadiant)) * a;
 		
@@ -71,8 +77,7 @@ public class PythagorasTree {
 		StdDraw.line(x0SquareLeft, y0SquareLeft, x1SquareLeft, y1SquareLeft);
 		StdDraw.line(x1SquareLeft, y1SquareLeft, x1, y1);
 		
-		
-		// calculate missing 2 points of right square
+		// calculate missing 2 points of right square by using sin and cos parallel to x and y axis of canvas
 		double x0SquareRight = x1 + (Math.cos(alphaRadiant + baseAlphaRadiant)) * b;
 		double y0SquareRight = y1 + (Math.sin(alphaRadiant + baseAlphaRadiant)) * b;
 		
@@ -84,10 +89,12 @@ public class PythagorasTree {
 		StdDraw.line(x0SquareRight, y0SquareRight, x1SquareRight, y1SquareRight);
 		StdDraw.line(x1SquareRight, y1SquareRight, x2, y2);
 		
+		n -= 1; // iteration done
+		
 		// recursive call
 		if(n > 0) {
-			drawTreePart(n-1, x0SquareLeft, y0SquareLeft, a, baseAlphaRadiant + alphaRadiant);
-			drawTreePart(n-1, x0SquareRight, y0SquareRight, b, baseAlphaRadiant + 2*Math.PI - betaRadiant);
+			drawTreePart(n, x0SquareLeft, y0SquareLeft, a, baseAlphaRadiant + alphaRadiant);
+			drawTreePart(n, x0SquareRight, y0SquareRight, b, baseAlphaRadiant + 2*Math.PI - betaRadiant);
 		}
 	}
 }
