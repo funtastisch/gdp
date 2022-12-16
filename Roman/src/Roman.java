@@ -85,7 +85,6 @@ public class Roman {
 	public static void main(String[] args) {
 		// Behandlung fehlender oder falscher Eingabeparameter
 		int N = 0;
-		/*
 		try {
 			N = Integer.parseInt(args[0]);
 		} catch (Exception e) {
@@ -94,10 +93,8 @@ public class Roman {
 		}
 		if (N < 1) {
 			System.out.println("Die Zahl muss zwischen 1 und 5000 liegen.");
-		} */
-		N = (int) (4999.0 * Math.random() + 1);
+		}
 		assert (1 <= N && N <= 5000);
-		System.out.println(N);
 		System.out.println(roman(N));
 	}
 }
