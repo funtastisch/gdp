@@ -1,7 +1,7 @@
 public class Aufgabe1d {
 
 	public static void main(String[] args) {
-		int a = 1;
+		int a = 3;
 		int[] b = { 7, 3, 5 };
 		b = magic(a, b);
 		for (int i : b) System.out.print(i + ", ");
