@@ -7,24 +7,24 @@ public class PythagorasTree {
 		int n = 0;
 		try {
 			n = Integer.parseInt(args[0]);
-			
+
 		} catch (Exception e) {
 			StdOut.println("Der Parameter entspricht dem benoetigten Format!");
 			System.exit(-1);
 		}
-		if(args.length != 1) {
+		if (args.length != 1) {
 			StdOut.println("Kein oder mehr als ein Parameter!");
 			System.exit(-1);
 		}
-		if(n == 0) {
+		if (n == 0) {
 			StdOut.println("Es muss mindestens eine Iteration geben!");
 			System.exit(-1);
 		}
-		
+
 		StdDraw.setXscale(0, 100);
 		StdDraw.setYscale(0, 100);
-		
-		//draw base square
+
+		// draw base square
 		double x0 = 40;
 		double y0 = 20;
 		double size = 15;
@@ -33,7 +33,7 @@ public class PythagorasTree {
 		StdDraw.line(x0 + size, y0, x0 + size, y0 + size);
 		drawTreePart(n, x0, y0 + size, size, 0);
 	}
-	
+
 	/**
 	 * Draws a part of the tree with fix point at the bottom left corner of the triangle
 	 * @param n Iteration
@@ -44,13 +44,13 @@ public class PythagorasTree {
 	 */
 	static void drawTreePart(int n, double x0, double y0, double c, double baseAlphaRadiant) {
 		
-		double alphaRadiant = Math.random()*Math.PI/6 + Math.PI/6; // radiant of ankle alpha
+		double alphaRadiant = Math.random()*Math.PI/6 + Math.PI/6; // radiant of ankle alpha pi/6 <= alpha < pi/3
 		double betaRadiant = Math.PI - Math.PI/2 - alphaRadiant; // radiant of ankle beta
 		
 		double a = Math.cos(alphaRadiant) * c; // adjacent length
 		double b = Math.sin(alphaRadiant) * c; // oppsite leg length
 		
-		// P1 (x1|y2) is point at beta ankle
+		// P1 (x1|y1) is point at right ankle
 		double x1 = x0 + (Math.cos(alphaRadiant + baseAlphaRadiant) * a);
 		double y1 = y0 + (Math.sin(alphaRadiant + baseAlphaRadiant) * a);
 		
@@ -93,7 +93,7 @@ public class PythagorasTree {
 		// recursive call
 		if(n > 0) {
 			drawTreePart(n, x0SquareLeft, y0SquareLeft, a, baseAlphaRadiant + alphaRadiant);
-			drawTreePart(n, x0SquareRight, y0SquareRight, b, baseAlphaRadiant + 2*Math.PI - betaRadiant);
+			drawTreePart(n, x0SquareRight, y0SquareRight, b, baseAlphaRadiant - betaRadiant);
 		}
 	}
 }

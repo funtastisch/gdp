@@ -91,10 +91,11 @@ public class Roman {
 			System.out.println("Bitte eine Zahl als Parameter angeben.");
 			System.exit(-1);
 		}
-		if (N < 1) {
+		if (N < 1 || N > 5000) {
 			System.out.println("Die Zahl muss zwischen 1 und 5000 liegen.");
+			System.exit(-1);
 		}
-		assert (1 <= N && N <= 5000);
+		assert (1 <= N && N <= 5000): "Die Zahl muss zwischen 1 und 5000 liegen.";
 		System.out.println(roman(N));
 	}
 }
