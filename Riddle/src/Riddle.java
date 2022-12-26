@@ -41,19 +41,9 @@ public class Riddle {
 
 	}
 
-	static int[] findRiddle(int[] riddle, int n, int index) {
-		if(n == 1 && index > riddle.length-2) return null;
-		else {
-			
-			if(riddle[index] == 0 && riddle [index + n + 1] == 0) {
-				riddle[index] = n;
-				riddle[index + n + 1] = n;
-				riddle = findRiddle(riddle, ++n, 0);
-			}
-			
-			
-			return riddle;
-		}
+	static int[] findRiddle(int[] riddle, int n, int i) {
+		if(riddle)
+		return riddle;
 		
 	}
 
