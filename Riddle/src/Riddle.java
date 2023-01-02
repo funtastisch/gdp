@@ -1,121 +1,95 @@
 
 public class Riddle {
-	static int maxN;
+	static int foundRiddles = 0;
 
 	public static void main(String[] args) {
-		int n = 3;
-		maxN = n;
-		int[] riddle = new int[n * 2];
-		/*
-		 * for (int i = 0; i < riddle.length - 1; i++) { int[] solution =
-		 * findRiddle(riddle, 1, i); if (solution != null) addSolution(solutions,
-		 * solution); }
-		 */
-		int[][] solutions = new int[0][];
-		int[] a = { 1, 2, 3, 4, 5 };
-		int[] b = { 1, 2, 3, 2, 1 };
-		int[] c = { 1, 2, 3, 4, 5 };
-		int[] d = { 5, 4, 3, 2, 1 };
-		int[] e = { 5, 4, 3, 2, 2 };
-		int[] f = { 2, 2, 3, 4, 5 };
-		if (!exists(a, solutions))
-			solutions = addSolution(solutions, a);
-		if (!exists(b, solutions))
-			solutions = addSolution(solutions, b);
-		if (!exists(c, solutions))
-			solutions = addSolution(solutions, c);
-		if (!exists(d, solutions))
-			solutions = addSolution(solutions, d);
-		if (!exists(e, solutions))
-			solutions = addSolution(solutions, e);
-		if (!exists(f, solutions))
-			solutions = addSolution(solutions, f);
-
-		if (solutions.length > 0)
-			for (int i = 0; i <= solutions.length - 1; i++) {
-				print(solutions[i]);
-				System.out.print("\n");
-			}
-		else
-			System.out.println("keine Loesung gefunden.");
-
-	}
-
-	static int[] findRiddle(int[] riddle, int n, int i) {
-		if(riddle)
-		return riddle;
+		int n = 0;
+		try {
+			n = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			System.out.println("Der Parameter kann nicht benutzt werden!");
+			System.exit(-1);
+		}
 		
-	}
+		findSolutions(new int[n*2], new boolean[n], 0);
 
-	static int[] clearRiddleUpToN(int[] riddle, int max) {
-		for (int i = 0; i < riddle.length - 1; i++) {
-			if (riddle[i] >= max)
-				riddle[i] = 0;
-		}
-		return riddle;
-	}
-
-	static int[][] addSolution(int[][] solutions, int[] riddle) {
-		int lastIndex = 0;
-		if (solutions.length > 0)
-			lastIndex = solutions.length;
-		solutions = upSizeArray(solutions);
-		solutions[lastIndex] = riddle;
-		return solutions;
-	}
-
-	static int[][] upSizeArray(int[][] array) {
-		int[][] biggerArray = new int[array.length + 1][];
-		if (biggerArray.length == 1)
-			return biggerArray;
-		// transfer references
-		for (int i = 0; i <= array.length - 1; i++) {
-			biggerArray[i] = array[i];
-		}
-		return biggerArray;
-	}
-
-	static boolean exists(int[] riddle, int[][] solutions) {
-		if (solutions.length == 0)
-			return false;
-		boolean riddleFoundFw = true;
-		boolean riddleFoundBw = true;
-
-		// first loop: go through all riddle saved in solutions
-		for (int i = 0; i <= solutions.length - 1; i++) {
-			riddleFoundFw = true;
-			// second loop: go through single digits in riddle
-			for (int j = 0; j <= solutions[i].length - 1; j++) {
-				if (solutions[i][j] != riddle[j]) {
-					riddleFoundFw = false;
-					break;
-				}
-			}
-			// check to reduce unnecessary operations
-			if (riddleFoundFw)
-				return true;
-
-			riddleFoundBw = true;
-			int count = solutions[i].length - 1;
-			for (int j = 0; j <= solutions[i].length - 1; j++) {
-				if (solutions[i][j] != riddle[count]) {
-					riddleFoundBw = false;
-					break;
-				}
-				count--;
-			}
-			// check to reduce unnecessary operations
-			if (riddleFoundBw)
-				return true;
-		}
-		if (riddleFoundFw || riddleFoundBw)
-			return true;
+		if (foundRiddles == 0)
+			System.out.println("keine Loesung");
+		else if (foundRiddles == 1)
+			System.out.println("eine Loesung");
 		else
-			return false;
+			System.out.println(foundRiddles + " Loesungen");
 	}
 
+	/**
+	 * Goes through every n at every position and searches for solutions and puts
+	 * them into ArrayList
+	 * 
+	 * @param riddle Array where n is possibly put
+	 * @param used   boolean array of length = n -> saves all the used numbers
+	 * @param i      index at where n should be put
+	 */
+	static void findSolutions(int[] riddle, boolean[] used, int i) {
+		// to catch exceptions
+		if (i < riddle.length - 1) {
+			// only iterate through n if there is space
+			for (int n = 1; n <= riddle.length / 2; n++) {
+				if (!used[n - 1]) {
+					if (i + n + 1 >= riddle.length)
+						return;
+					if (riddle[i + n + 1] == 0) {
+						riddle[i] = n;
+						riddle[i + n + 1] = n;
+						used[n - 1] = true;
+						if (allNmbrsUsed(used)) {
+							if (riddle[0] < riddle[riddle.length - 1]) {
+								foundRiddles++;
+								if (riddle.length / 2 < 10)
+									print(riddle);
+							}
+							riddle[i] = 0;
+							riddle[i + n + 1] = 0;
+							used[n - 1] = false;
+							return;
+						}
+						findSolutions(riddle, used, nextAvailablePos(riddle));
+						riddle[i] = 0;
+						riddle[i + n + 1] = 0;
+						used[n - 1] = false;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Adds an array to the list and checks if it doesn't exist in reverse
+	 * 
+	 * @param riddle Riddle that has to be added to the list
+	 */
+	static boolean allNmbrsUsed(boolean[] nmbrs) {
+		for (boolean b : nmbrs) {
+			if (!b)
+				return false;
+		}
+		return true;
+	}
+
+	static int nextAvailablePos(int[] riddle) {
+		for (int i = 0; i < riddle.length; i++)
+			if (riddle[i] == 0)
+				return i;
+		return -1;
+	}
+
+	/**
+	 * Prints out the array
+	 * 
+	 * @param a Array that has be printed
+	 */
 	static void print(int[] a) {
 		for (int i : a)
 			System.out.print(i);
+		System.out.print("\n");
 	}
 }
