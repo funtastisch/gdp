@@ -33,8 +33,8 @@ public class Roman {
 			roman += "L";
 			n -= 50;
 		} else if (n >= 40) {
-			roman += "XL";
-			n -= 40;
+			roman += roman(50 - (n / 10 * 10)) + "L";
+			n %= 10;
 		}
 
 		// all cases for X (10)
