@@ -8,64 +8,45 @@ public class Roman {
 		if (n >= 1000) {
 			roman += "M";
 			n -= 1000;
-		} else if (n >= 998) {
-			roman = roman(1000 - n) + "M";
-			n = 0;
-		} else if (n >= 980) {
-			roman = roman(1000 - (n / 10 * 10)) + "M";
-			n = n % 10;
-
-		} else if (n >= 800) {
+		} else if (n >= 900) {
 			roman = roman(1000 - (n / 100 * 100)) + "M";
 			n = n % 100;
-
-			// all cases for D (500)
-		} else if (n >= 500) {
+		}
+		// all cases for D (500)
+		else if (n >= 500) {
 			n -= 500;
 			roman += "D";
-		} else if (n >= 498) {
-			roman = roman(500 - n) + "D";
-			n = 0;
-		} else if (n >= 480) {
-			roman = roman(500 - (n / 10 * 10)) + "D";
-			n = n % 10;
-
-		} else if (n >= 300) {
-			roman = roman(500 - (n / 100 * 100)) + "D";
-			n = n % 100;
-
-			// all cases for C (100)
-		} else if (n >= 100) {
+		} else if(n >= 400) {
+			roman = roman(500- (n / 100 * 100)) + "D";
+			n %= 100;
+		}
+		// all cases for C (100)
+		else if (n >= 100) {
 			n -= 100;
 			roman += "C";
-		} else if (n >= 98) {
-			roman = roman(100 - n) + "C";
-			n = 0;
-		} else if (n >= 80) {
+		} else if (n >= 90) {
 			roman = roman(100 - (n / 10 * 10)) + "C";
 			n = n % 10;
-
-			// all cases for L (50)
-		} else if (n >= 50) {
+		}
+		// all cases for L (50)
+		else if (n >= 50) {
 			roman += "L";
 			n -= 50;
-		} else if (n >= 48) {
-			roman = roman(50 - n) + "L";
-			n = 0;
-		} else if (n >= 30) {
-			roman = roman(50 - (n / 10 * 10)) + "L";
-			n = n % 10;
+		} else if (n >= 40) {
+			roman += "XL";
+			n -= 40;
+		}
 
-			// all cases for X (10)
-		} else if (n >= 10) {
+		// all cases for X (10)
+		else if (n >= 10) {
 			roman += "X";
 			n -= 10;
-		} else if (n >= 8) {
+		} else if (n >= 9) {
 			roman = roman(10 - n) + "X";
 			n = 0;
-
-			// all cases for V (5)
-		} else if (n >= 5) {
+		}
+		// all cases for V (5)
+		else if (n >= 5) {
 			roman += "V";
 			n -= 5;
 		} else if (n == 4) {
@@ -95,7 +76,11 @@ public class Roman {
 			System.out.println("Die Zahl muss zwischen 1 und 5000 liegen.");
 			System.exit(-1);
 		}
-		assert (1 <= N && N <= 5000): "Die Zahl muss zwischen 1 und 5000 liegen.";
-		System.out.println(roman(N));
+		assert (1 <= N && N <= 5000) : "Die Zahl muss zwischen 1 und 5000 liegen.";
+		for (int i = 1; i <= 1000; i++) {
+			if(i > 100) i+=99;
+			System.out.print(i + ": ");
+			System.out.println(roman(i));
+		}
 	}
 }
