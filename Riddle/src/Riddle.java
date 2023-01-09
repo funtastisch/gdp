@@ -10,8 +10,9 @@ public class Riddle {
 			System.out.println("Der Parameter kann nicht benutzt werden!");
 			System.exit(-1);
 		}
-		
-		findSolutions(new int[n*2], new boolean[n], 0);
+		n = 3;
+
+		findSolutions(new int[n * 2], new boolean[n], 0);
 
 		if (foundRiddles == 0)
 			System.out.println("keine Loesung");
@@ -32,15 +33,49 @@ public class Riddle {
 	static void findSolutions(int[] riddle, boolean[] used, int i) {
 		// to catch exceptions
 		if (i < riddle.length - 1) {
-			// only iterate through n if there is space
-			for (int n = 1; n <= riddle.length / 2; n++) {
-				if (!used[n - 1]) {
+			if (riddle[i] == 0) {
+				// only iterate through n if there is space
+				for (int n = 1; n <= riddle.length / 2; n++) {
+					if (!used[n - 1]) {
+						if (i + n + 1 >= riddle.length)
+							return;
+						if (riddle[i + n + 1] == 0) {
+							riddle[i] = n;
+							riddle[i + n + 1] = n;
+							used[n - 1] = true;
+							if (allNmbrsUsed(used)) {
+								if (riddle[0] < riddle[riddle.length - 1]) {
+									foundRiddles++;
+									if (riddle.length / 2 < 10)
+										print(riddle);
+								}
+								riddle[i] = 0;
+								riddle[i + n + 1] = 0;
+								used[n - 1] = false;
+								return;
+							}
+							findSolutions(riddle, used, 0);
+							riddle[i] = 0;
+							riddle[i + n + 1] = 0;
+							used[n - 1] = false;
+						}
+					}
+				}
+			} else
+				findSolutions(riddle, used, i + 1);
+		}
+	}
+	
+	static void findSolutions2(int[] riddle, boolean[] used, int n) {
+		if (n <= riddle.length / 2) {
+			for (int i = 0; i < riddle.length - 1 - n; i++) {
+				if(riddle[i] == 0) {
 					if (i + n + 1 >= riddle.length)
 						return;
 					if (riddle[i + n + 1] == 0) {
 						riddle[i] = n;
 						riddle[i + n + 1] = n;
-						used[n - 1] = true;
+						used[n-1] = true;
 						if (allNmbrsUsed(used)) {
 							if (riddle[0] < riddle[riddle.length - 1]) {
 								foundRiddles++;
@@ -52,14 +87,11 @@ public class Riddle {
 							used[n - 1] = false;
 							return;
 						}
-						findSolutions(riddle, used, nextAvailablePos(riddle));
-						riddle[i] = 0;
-						riddle[i + n + 1] = 0;
-						used[n - 1] = false;
 					}
 				}
 			}
 		}
+		
 	}
 
 	/**
@@ -73,13 +105,6 @@ public class Riddle {
 				return false;
 		}
 		return true;
-	}
-
-	static int nextAvailablePos(int[] riddle) {
-		for (int i = 0; i < riddle.length; i++)
-			if (riddle[i] == 0)
-				return i;
-		return -1;
 	}
 
 	/**
