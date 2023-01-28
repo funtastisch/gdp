@@ -19,6 +19,48 @@ public class MazeSolver {
 			// set path
 			maze[row][col] = 2;
 			
+			// move up
+			boolean upPossibble = solve(maze, row - 1, col);
+			if(upPossibble)
+				return true;
+			// move left
+			boolean leftPossible = solve(maze, row, col - 1);
+			if (leftPossible)
+				return true;
+			
+			// move down
+			boolean downPossible = solve(maze, row + 1, col);
+			if (downPossible)
+				return true;
+			
+			// move right
+			boolean rightPossible = solve(maze, row, col + 1);
+			if (rightPossible)
+				return true;
+			
+			// remove step of path
+			maze[row][col] = 1;
+			return false;
+		}
+		return false;
+	}
+	public static boolean solve2(int[][] maze, int row, int col) {
+		
+		// if goal is found
+		if (row == maze.length - 1 && col == 0 && maze [row][col] == 3) {
+			maze[row][col] = 2;
+			return true;
+		}
+		
+		// check if current position is valid
+		if (isOk(maze, row, col)) {
+			// check if current position was already used in path
+			if(row != 0 && col != maze.length - 1 && maze[row][col] == 2)
+				return false;
+			
+			// set path
+			maze[row][col] = 2;
+			
 			// move left
 			boolean leftPossible = solve(maze, row, col - 1);
 			if (leftPossible)
@@ -74,7 +116,7 @@ public class MazeSolver {
 	}
 
 	static boolean isOk(int[][] maze, int row, int col) {
-		if (row > maze.length - 1 || col < 0)
+		if (row > maze.length - 1 || col < 0 || row < 0 || col > maze.length - 1)
 			return false;
 		else if (maze[row][col] == 0)
 			return false;
